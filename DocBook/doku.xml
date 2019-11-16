@@ -1,0 +1,459 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://docbook.org/xml/5.0/rng/docbook.rng" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<?xml-model href="http://docbook.org/xml/5.0/rng/docbook.rng" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<book xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0">
+    <info>
+        <title>Mancala Projekt Dokumentation</title>
+        <subtitle>Team "XML DTD" - XML Praktikum WS 2016/2017</subtitle>
+        <pubdate>27.03.2017</pubdate>
+        <author>
+            <personname>Ton That, Khiem</personname>
+        </author>
+        <author>
+            <personname>Trinh, Phi Long</personname>
+        </author>
+        <author>
+            <personname>Tran Trung, An</personname>
+        </author>
+        <author>
+            <personname>Goldberg, Viktor</personname>
+        </author>
+    </info>
+    <chapter>
+        <title>Einleitung</title>
+
+            <para>Mancala ist ein antikes Brettspiel, welches in verschiedenen Varianten gespielt
+                wird. Dieses "Zähl-und-Fang" Spiel wird von zwei Spielern gespielt, wobei das Ziel
+                ist, die meisten Steine im eigenen Haus zu sammeln. Im Rahmen des Praktikums
+                XML-Technologien im WS 2016/17 entwickelt das Team "XML-DTD" dieses Spiel unter
+                Einsatz des XML Stacks. Dieses DocBook repräsentiert die Dokumentation für die
+                Vorgehensweise als auch Umsetzung und Inbetriebnahme des Online-Spiels.</para>
+        <para><emphasis>Hinweis</emphasis>: Die Darstellung der einzelnen Abbildungen in dieser
+            Dokumentation wurde speziell für das PDF-Format optimiert.</para>
+    </chapter>
+    <chapter>
+        <title>Design und Architektur</title>
+        <sect1>
+            <title>Mancala Spielregeln</title>
+            <para> In dieser Implementierung wird das Augenmerk auf das sogenannte zweistufige
+                Mancala - besser bekannt als "Kalah" - gelegt. Hierfür werden initial 48 Steine auf
+                12 Mulden gleichverteilt. </para>
+            <sect2>
+                <title>Mulden und Häuser</title>
+                <para>Die Mulden eines jeweiligen Spielers befinden sich unten bzw. auf der rechten Seite. Das Haus des Nutzers ist das große Element auf der rechten Seite bzw. in der oberen Ecke. </para>
+            </sect2>
+            <sect2>
+                <title>Aussähung der Steine</title>
+                <para>Der Spieler wählt eine seiner Mulden aus, aus der die Steine ausgesäht werden
+                    sollen. Die Aussähung findet gegen den Uhrzeigersinn statt, wobei in jede Mulde
+                    ein Stein gelegt wird, bis alle Steine ausgesäht sind. </para>
+            </sect2>
+            <sect2>
+                <title>Das Haus</title>
+                <para>Wird bei der Aussähung das eigene Haus passiert, so wird ein Stein abgelegt. Wird beim Durchlauf das Haus des Gegners passiert, überspringt man es.</para>
+            </sect2>
+            <sect2>
+                <title>Freier Zug</title>
+                <para>Fällt der letzte Stein in das eigene Haus, so hat der Spieler einen freien Zug.</para>
+            </sect2>
+            <sect2>
+                <title>Ende</title>
+                <para>Das Spiel ist beendet, wenn alle sechs Mulden auf der Seite eines Spielers leer sind. Der Spieler, der dann immer noch Steine auf seiner Seite liegen hat, fängt diese.</para>
+            </sect2>
+            <sect2>
+                <title>Sieg</title>
+                <para>Die Steine in beiden Häusern werden gezählt. Der Spieler mit der größeren Anzahl an Steinen gewinnt. </para>
+            </sect2>
+        </sect1>
+        <sect1>
+            <title>Konzept und Entwurf</title>
+            <para>In diesem Praktikum werden eine Reihe von XML-Technologien eingesetzt, u.a. SVG,
+                XSLT, XQuery und BaseX. </para>
+            <itemizedlist>
+                <listitem>
+                    <para><emphasis role="bold">SVG (Scalable Vector Graphics)</emphasis> wird zur
+                        Erstellung von zweidimensionalen Web-Graphiken, die vorallem eine gewisse
+                        Interaktivität und Animation mit sich bringen verwendet.</para>
+                </listitem>
+                <listitem>
+                    <para><emphasis role="bold">XSL und XSLT (Extensible Stylesheet
+                            Language)</emphasis> bildet die Style-Sprache in XML (ähnlich zu CSS bei
+                        HTML). XSLT (Transformation) hilft bei der Umwandlung von XML Dokumenten in
+                        andere Formate, wie z.B. HTML und PDF.</para>
+                </listitem>
+                <listitem>
+                    <para><emphasis role="bold">XQuery</emphasis> wird als Sprache zum Auslesen und
+                        Beabeiten von XML Tabellen eingesetzt, analog zur SQL-Sprache für
+                        Datenbanken. </para>
+                </listitem>
+                <listitem>
+                    <para><emphasis role="bold">BaseX</emphasis> ist eine skalierbare und
+                        hoch-performante XML Datenbank, die das Durchsuchen und Abspeichern von XML
+                        Daten erlaubt.</para>
+                </listitem>
+            </itemizedlist>
+            <sect2>
+                <title>Diagramm und Architektur</title>
+                <figure>
+                    <title>UML-Klassendiagramm</title>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata scale="40" fileref="uml1.png"/>
+                        </imageobject>
+                    </mediaobject>
+                </figure>
+                <para>Das UML-Klassendiagramm zeigt die Integration der einzelnen Klassen. Die
+                    folgende Auflistung beschreibt die implementierten Klassen mit Fokus auf
+                    Abhängigkeiten und die gegenseitige Interaktion. Die Klassen stellen jeweils die
+                    XQM-Dateien dar, mit ihren jeweiligen Methoden.<itemizedlist>
+                        <listitem>
+                            <para><emphasis role="bold">Mancala</emphasis>: Verwaltet die gesamte
+                                Seite, die angezeigt wird, als auch die RestXQ Abhängigkeiten, für
+                                die unterliegende Client/Server Kommunikation.</para>
+                        </listitem>
+                        <listitem>
+                            <para><emphasis role="bold">Spiel</emphasis>: Enthält einige Methoden
+                                zur tatsächlichen Spiellogik, die zur besseren Übersichtlichkeit
+                                noch einmal die Module Brett, Haus und Mulde unterteilt
+                                wurden.</para>
+                            <itemizedlist>
+                                <listitem>
+                                    <para><emphasis role="bold">Brett</emphasis>: Sämtliche
+                                        Abhängigkeiten, die mit dem Brett in Verbindung stehen,
+                                        kommen hier zusammen. Vor allem die Interaktion des Spielers
+                                        wird hier abgebildet.</para>
+                                </listitem>
+                                <listitem>
+                                    <para><emphasis role="bold">Haus</emphasis>: Verwaltung der
+                                        Steine, die in einem Haus liegen.</para>
+                                </listitem>
+                                <listitem>
+                                    <para><emphasis role="bold">Mulde</emphasis>: Verwaltung der
+                                        Steine, die in einer Mulde liegen.</para>
+                                </listitem>
+                            </itemizedlist>
+                        </listitem>
+                    </itemizedlist></para>
+            </sect2>
+            <sect2>
+                <title>Graphical User Interface (GUI)</title>
+                <para>Die HTML Seite des Projekts bildet die graphische Schnittstelle. Diese wurde
+                    mittels einer SVG Datei generiert und anschließend mit XSLT für den Webbrower
+                    transformiert. Der gesamte Code liegt in folgender XML Datei:
+                        <quote>webapp/static/mancala.xml</quote>.</para>
+                <figure>
+                    <title>Alpha Version des Spielbretts</title>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata scale="35" fileref="brett-initial.png"/>
+                        </imageobject>
+                    </mediaobject>
+                </figure>
+                <para>Wie in Abbildung 2.2 dargestellt, wurde das Spielbrett zunächst mittels einer eigens-verfassten SVG Datei erstellt. Somit hat sich das Team mit der SVG und XSLT Transformierungstechnologie auseinandergesetzt. Anschließend wurde wie in Abbildung 2.3 das unterliegende und statische Brett mittels Photoshop entworfen und in das SVG Format automatisch übersetzt.</para>
+                <figure>
+                    <title>Produktive Version des Spielbretts</title>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata scale="25" fileref="brett.png"/>
+                        </imageobject>
+                    </mediaobject>
+                </figure>
+                <para>Sämtliche Funktionalität wurde anschließend auf das generierte statische Brett
+                    als überliegendes Layer implementiert. Die Funktionen bzw. Komponenten
+                    beinhalten unter anderem:<itemizedlist>
+                        <listitem>
+                            <para><emphasis role="bold">Steine</emphasis>: Hierfür wurden 12
+                                Graphiken erstellt und angelgt, damit diese je nach Zählerstand in
+                                die jeweilge Mulde gelegt werden können.</para>
+                        </listitem>
+                    </itemizedlist></para>
+                <para>
+                    <itemizedlist>
+                        <listitem>
+                            <para><emphasis role="bold">Schaltflächen</emphasis>: Zwei Schaltflächen
+                                (Buttons) zum Anlegen eines neuen Spiels "NEW GAME" und für das
+                                Zurücksetzen eines laufeneden Spiels wurden mittig unter das
+                                statische Spielbrett eingefügt.</para>
+                        </listitem>
+                    </itemizedlist>
+                </para>
+                <para>
+                    <itemizedlist>
+                        <listitem>
+                            <para><emphasis role="bold">Markierungen</emphasis>: Die Mulden des
+                                Spielers, der gerade am Zug ist, werden mit einer Markierung
+                                (organge) umrandet. Dies wurde mit 12 transparenten und zugleich
+                                klickbaren Kreisen implementiert. Ein besonderes Features ist, dass
+                                die XSLT den aktuellen Spielzustand ausließst und den Kreis nur
+                                umrandet und klickbar macht, wenn auch Steine darin vorhanden sind
+                                und außerdem der zugehörige Spieler am Zug ist. </para>
+                        </listitem>
+                    </itemizedlist>
+                </para>
+                <para>
+                    <itemizedlist>
+                        <listitem>
+                            <para><emphasis role="bold">Texte</emphasis>: Unter anderem die Anzahl
+                                der Steine im jeweiligen Haus und die einzelnen Zähler unter den
+                                Mulden. Zudem wird über bzw. unter dem Brett angezeigt, welcher
+                                Spieler gerade am Zug ist oder gewonnen hat. </para>
+                        </listitem>
+                    </itemizedlist>
+                </para>
+                <para>
+                    <itemizedlist>
+                        <listitem>
+                            <para><emphasis role="bold">Pfeile</emphasis>: Über dem Haus wird
+                                jeweils angezeigt, welcher Spieler gerade am Zug ist.</para>
+                        </listitem>
+                    </itemizedlist>
+                </para>
+                <figure>
+                    <title>Spielbrett mit überliegender Logik-Ebene | Spieler 1 am Zug</title>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata scale="35" fileref="player1.png"/>
+                        </imageobject>
+                    </mediaobject>
+                </figure>
+                <figure>
+                    <title>Spielbrett mit überliegender Logik-Ebene | Spieler 2 am Zug</title>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata scale="35" fileref="player2.png"/>
+                        </imageobject>
+                    </mediaobject>
+                </figure>
+                <para>Die beiden Abbildungen 2.4 und 2.5 zeigen sowohl die Ansicht wenn Spieler 1
+                    als auch Spieler 2 am Zug sind. Die überliegende Logik des Brettspiels ist hier
+                    gut zu erkennen. Pro Mulde werden aus Darstellungsgründen maximal 12 Steine
+                    angezeigt. Sollte während eines Spiels die Anzahl der Steine pro Mulde 12
+                    übersteigen, so wird nur noch die tatsächliche Anzahl im Feld darüber/darunter
+                    modifiziert, jedoch weiterhin die Graphik für 12 Steine eingeblendet. Dieses
+                    Phänomen konnte jedoch bei zahlreichen Spielversuchen nur in Ausnahmefällen
+                    nachgestellt und beobachtet werden. </para>
+            </sect2>
+            <sect2>
+                <title>Client/Server Modell</title>
+                <para>Die Architektur wurde so gewählt, dass die Umgebung dem klassischen
+                    Client/Server Modell mit den folgenden Komponenten entspricht:<itemizedlist>
+                        <listitem>
+                            <para>Datenbank</para>
+                        </listitem>
+                        <listitem>
+                            <para>Client</para>
+                        </listitem>
+                        <listitem>
+                            <para>Server</para>
+                        </listitem>
+                    </itemizedlist></para>
+                <para>Dieses Modell wird detailliert in nachfolgender Abbildung dargestellt.</para>
+                <figure>
+                    <title>Client/Server Architektur</title>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata scale="30" fileref="csarch.png"/>
+                        </imageobject>
+                    </mediaobject>
+                </figure>
+            </sect2>
+        </sect1>
+    </chapter>
+    <chapter>
+        <title>Implementierung</title>
+        <para>Für die Implementierung der vorhergehenden Architektur und des Designs wurde eine
+            Dateistruktur festegelegt, die wie folgt aussieht:</para>
+        <para>
+            <itemizedlist>
+                <listitem>
+                    <para><emphasis>spielstart.xml</emphasis>: Der Spielstart enthält die initialen
+                        Werte für die Generierung der <emphasis role="bold">Steine</emphasis>,
+                            <emphasis role="bold">Mulden</emphasis> und <emphasis role="bold"
+                            >Häuser</emphasis>, als auch eine <emphasis role="bold"
+                            >Spiel-ID</emphasis> zur Identifizierung des Spiels in der Datenbank und
+                        zwei weitere Attribute:</para>
+                    <itemizedlist>
+                        <listitem>
+                            <para><emphasis>istAmZug</emphasis>: Defeniert, welcher Spieler (Spieler
+                                1 oder Spieler 2) gerade am Zug ist</para>
+                        </listitem>
+                        <listitem>
+                            <para><emphasis>gewonnen</emphasis>: Bestimmt, ob das Spiel bereits
+                                gewonnen wurde und wenn ja, von wem.</para>
+                        </listitem>
+                    </itemizedlist>
+                </listitem>
+            </itemizedlist>
+        </para>
+        <para>
+            <itemizedlist>
+                <listitem>
+                    <para><emphasis>spielzaehler.xml</emphasis>: Enthält ein einziges Attribut, das
+                        als Zähler dient, um zu bestimmen, wie viele Spiele bereits in der Datenbank
+                        vorhanden sind.</para>
+                </listitem>
+                <listitem>
+                    <para><emphasis>mancala.xml</emphasis>: Generiert die Oberfläche. Es enthält
+                        außerdem alle notwendigen Elemente des Spielbretts. Die Daten mit
+                        zugehöriger Spiel-ID werden aus der Datenbank ausgelesen und anschließend in
+                        diese XML-Datei übertragen und darüber präsentiert. Die Präsentation
+                        funktioniert durch Konvertierung der XML-Datei in eine SVG mit Hilfe von
+                        XSLT. </para>
+                </listitem>
+                <listitem>
+                    <para><emphasis>mancala.xqm</emphasis>: Diese Datei enhält alle Methoden, die im
+                        Klassendiagramm aus Sektion 2.2.1 der Architektur beschrieben wird. </para>
+                </listitem>
+            </itemizedlist>
+        </para>
+        <sect1>
+            <title>Namespaces</title>
+            <para>Zur objekt-orientierten Umsetzung des Programms und vor allem der Implementierung,
+                wie im Klassendiagramm dargestellt, wird das Konzept der Namespaces angewandt.
+                Dadurch lässt sich hauptsächlich eine gewisse Klassenorientierung (Class/Scope)
+                simulieren. Die Namespaces, die implementiert wurden, umfassen:<itemizedlist>
+                    <listitem>
+                        <para><emphasis>seite</emphasis>: Zuständig für die Kategorisierung aller
+                            Methoden, die mit dem Seitenaufbau bzw. der Präsentation in Verbindung
+                            gesetzt werden. </para>
+                    </listitem>
+                    <listitem>
+                        <para><emphasis>spiel</emphasis>: Verwaltet alle aufgelisteten Methoden, die
+                            zur tatsächlich logischen Komponente des Spiels gehören. </para>
+                    </listitem>
+                </itemizedlist></para>
+            <para>Um den Namepsace <emphasis>spiel</emphasis> noch einmal zu unterteilen, wurde zur Übersichtlichkeit<itemizedlist>
+                    <listitem>
+                        <para><emphasis>brett</emphasis></para>
+                    </listitem>
+                    <listitem>
+                        <para><emphasis>mulde</emphasis></para>
+                    </listitem>
+                    <listitem>
+                        <para><emphasis>haus</emphasis></para>
+                    </listitem>
+                </itemizedlist></para>
+            <para>eingeführt. </para>
+        </sect1>
+        <sect1>
+            <title>Single Node Updates mittels XQuery</title>
+            <para>Wird ein XQuery Skript aufgerufen, so wird es erstmal vollständig geparsed und
+                anschließend zum Ende des Skripts erst ausgeführt. Dadurch ergibt sich die folgende
+                Herausforderung:</para>
+            <para><emphasis>Ein Knoten kann nicht zwei mal zur gleichen Zeit/Abfrage aktualisiert
+                    werden.</emphasis></para>
+            <para>Das Problem wird umgangen, indem die Programmlogik entsprechend den Möglichkeiten
+                von XML angepasst wurde.</para>
+        </sect1>
+        <sect1>
+            <title>GUI mit SVG, CSS, HTML</title>
+            <para>Die GUI wird vollständig als SVG generiert und mit Hilfe von XSLT in das HTML
+                Format übersetzt. Dediziertes HTML und CSS kommt in der vorliegenden Implementierung
+                nicht zum Einsatz. Das Ergebnis ist in Abbildung 3.1 zu sehen.</para>
+            <figure>
+                <title>Screenshot des implementierten Spiels im Webbrowser CLIQZ</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata scale="25" fileref="screenshot.png"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
+        </sect1>
+    </chapter>
+    <chapter>
+        <title>Zusätzliche Features</title>
+        <para>Das DTD-Team hat sich dazu entschieden noch eine Reihe an zusätzlichen Funktionen und
+            Features einzubinden, die vor allem für die Weiterentwicklung hilfreich sind und die
+            allgemeine "User Experience" erheblich steigern. </para>
+        <sect1>
+            <title>Deployment und Inbetriebnahme</title>
+            <para>Die Applikation wird auf einem weltweit erreichbaren Server für die Dauer des
+                Praktikums zur Verfügung gestellt. Dieser Server wird in der Microsoft Azure Cloud
+                gehostet und über den Public-DNS-Hostname "mancala.plcte.com" erreichbar gemacht. </para>
+            <para>Bei dem Server handelt es sich um eine virtuelle Maschine mit folgenden Spezifikationen:<itemizedlist>
+                    <listitem>
+                        <para>Debian/GNU Linux 8 Jessie build 3.16.39-1</para>
+                    </listitem>
+                </itemizedlist><itemizedlist>
+                    <listitem>
+                        <para>64-bit Architektur </para>
+                    </listitem>
+                </itemizedlist></para>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para>1 GB RAM</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para>15 GB Festplatten-/Hauptspeicher</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+            <para>Zur Inbetriebnahme des mit basex ausgestatteten Jettie Servers wurde außerdem das
+                Paket "basex" über das Aptitude Source Verzeichnis mit folgendem Befehl
+                heruntergeladen: "apt-get install basex".</para>
+            <para>Nachdem das basexhttp Skript aus dem "bin/"-Ordner gestartet und in den
+                Hintergrund (daemonized) verlargert wird, kann auf das Spiel weltweit über jeden
+                verfügbaren Webbrowser mittels <emphasis role="bold"
+                    >http://mancala.plcte.com:8984</emphasis> zugegriffen werden.</para>
+            <para>Die Browser, die im Rahmen des Praktikum getestet wurden, sind:</para>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para>Apple Safari</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para>Google Chrome</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para>Mozilla Firefox</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para>Microsoft Internet Explorer / Edge</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para>CLIQZ</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+        </sect1>
+        <sect1>
+            <title>Continuous Integration</title>
+            <para>Zur übersichtlicheren und nachhaltigeren Weiterentwicklung wurde auf die bewerte
+                Verfahrensweise "Continuous Integration" gesetzt. Dies erlaubt es den aktuellen Code
+                in einem Versionierungssystem (in unserem Fall <emphasis role="bold">git</emphasis>)
+                zu pflegen und den Head (bzw. die Master-Branch) direkt - aus der
+                Entwicklungsumgebung heraus - produktiv zu <emphasis>committen</emphasis>. Der
+                Server wird anschließend bei jedem Commit durch eine sogenannte
+                    <emphasis>Webhook</emphasis> vollautomatisch neugestartet und die App somit
+                provisioniert. </para>
+            <para>Das Entwicklungsteam kann somit an einem neuen Feature im sog.
+                    <emphasis>Feature-Branch</emphasis> arbeiten und bei Abschluss und zugehörigem
+                Funktionstest die neue Funktion direkt online schalten, ohne dass die Berührung des
+                produktiv laufenden Codes erforderlich ist. </para>
+            <para>Continuous Integration ermöglicht somit einen reibungslosen Entwicklungsablauf und
+                schränkt während der Entwicklung die Erreichbarkeit der Applikation nicht ein. Somit
+                wird auch die Verfügbarkeit des Spiels gewährleistet. </para>
+        </sect1>
+    </chapter>
+</book>

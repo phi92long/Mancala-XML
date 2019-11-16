@@ -1,0 +1,62 @@
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   <title>Konzept und Entwurf</title><meta name="generator" content="DocBook XSL Stylesheets V1.79.1"><link rel="home" href="index.html" title="Mancala Projekt Dokumentation"><link rel="up" href="ch02.html" title="Chapter&nbsp;2.&nbsp;Design und Architektur"><link rel="prev" href="ch02.html" title="Chapter&nbsp;2.&nbsp;Design und Architektur"><link rel="next" href="ch03.html" title="Chapter&nbsp;3.&nbsp;Implementierung"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Konzept und Entwurf</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch02.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;2.&nbsp;Design und Architektur</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch03.html">Next</a></td></tr></table><hr></div><div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d5e42"></a>Konzept und Entwurf</h2></div></div></div><p>In diesem Praktikum werden eine Reihe von XML-Technologien eingesetzt, u.a. SVG,
+                XSLT, XQuery und BaseX. </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p><span class="bold"><strong>SVG (Scalable Vector Graphics)</strong></span> wird zur
+                        Erstellung von zweidimensionalen Web-Graphiken, die vorallem eine gewisse
+                        Interaktivit&auml;t und Animation mit sich bringen verwendet.</p></li><li class="listitem"><p><span class="bold"><strong>XSL und XSLT (Extensible Stylesheet
+                            Language)</strong></span> bildet die Style-Sprache in XML (&auml;hnlich zu CSS bei
+                        HTML). XSLT (Transformation) hilft bei der Umwandlung von XML Dokumenten in
+                        andere Formate, wie z.B. HTML und PDF.</p></li><li class="listitem"><p><span class="bold"><strong>XQuery</strong></span> wird als Sprache zum Auslesen und
+                        Beabeiten von XML Tabellen eingesetzt, analog zur SQL-Sprache f&uuml;r
+                        Datenbanken. </p></li><li class="listitem"><p><span class="bold"><strong>BaseX</strong></span> ist eine skalierbare und
+                        hoch-performante XML Datenbank, die das Durchsuchen und Abspeichern von XML
+                        Daten erlaubt.</p></li></ul></div><div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="d5e58"></a>Diagramm und Architektur</h3></div></div></div><div class="figure"><a name="d5e60"></a><p class="title"><b>Figure&nbsp;2.1.&nbsp;UML-Klassendiagramm</b></p><div class="figure-contents"><div class="mediaobject"><img src="../../uml1.png" width="216" alt="UML-Klassendiagramm"></div></div></div><br class="figure-break"><p>Das UML-Klassendiagramm zeigt die Integration der einzelnen Klassen. Die
+                    folgende Auflistung beschreibt die implementierten Klassen mit Fokus auf
+                    Abh&auml;ngigkeiten und die gegenseitige Interaktion. Die Klassen stellen jeweils die
+                    XQM-Dateien dar, mit ihren jeweiligen Methoden.</p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p><span class="bold"><strong>Mancala</strong></span>: Verwaltet die gesamte
+                                Seite, die angezeigt wird, als auch die RestXQ Abh&auml;ngigkeiten, f&uuml;r
+                                die unterliegende Client/Server Kommunikation.</p></li><li class="listitem"><p><span class="bold"><strong>Spiel</strong></span>: Enth&auml;lt einige Methoden
+                                zur tats&auml;chlichen Spiellogik, die zur besseren &Uuml;bersichtlichkeit
+                                noch einmal die Module Brett, Haus und Mulde unterteilt
+                                wurden.</p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: circle; "><li class="listitem"><p><span class="bold"><strong>Brett</strong></span>: S&auml;mtliche
+                                        Abh&auml;ngigkeiten, die mit dem Brett in Verbindung stehen,
+                                        kommen hier zusammen. Vor allem die Interaktion des Spielers
+                                        wird hier abgebildet.</p></li><li class="listitem"><p><span class="bold"><strong>Haus</strong></span>: Verwaltung der
+                                        Steine, die in einem Haus liegen.</p></li><li class="listitem"><p><span class="bold"><strong>Mulde</strong></span>: Verwaltung der
+                                        Steine, die in einer Mulde liegen.</p></li></ul></div></li></ul></div></div><div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="d5e83"></a>Graphical User Interface (GUI)</h3></div></div></div><p>Die HTML Seite des Projekts bildet die graphische Schnittstelle. Diese wurde
+                    mittels einer SVG Datei generiert und anschlie&szlig;end mit XSLT f&uuml;r den Webbrower
+                    transformiert. Der gesamte Code liegt in folgender XML Datei:
+                        <span class="quote">&#8220;<span class="quote">webapp/static/mancala.xml</span>&#8221;</span>.</p><div class="figure"><a name="d5e87"></a><p class="title"><b>Figure&nbsp;2.2.&nbsp;Alpha Version des Spielbretts</b></p><div class="figure-contents"><div class="mediaobject"><img src="../../brett-initial.png" width="189" alt="Alpha Version des Spielbretts"></div></div></div><br class="figure-break"><p>Wie in Abbildung 2.2 dargestellt, wurde das Spielbrett zun&auml;chst mittels einer eigens-verfassten SVG Datei erstellt. Somit hat sich das Team mit der SVG und XSLT Transformierungstechnologie auseinandergesetzt. Anschlie&szlig;end wurde wie in Abbildung 2.3 das unterliegende und statische Brett mittels Photoshop entworfen und in das SVG Format automatisch &uuml;bersetzt.</p><div class="figure"><a name="d5e93"></a><p class="title"><b>Figure&nbsp;2.3.&nbsp;Produktive Version des Spielbretts</b></p><div class="figure-contents"><div class="mediaobject"><img src="../../brett.png" width="135" alt="Produktive Version des Spielbretts"></div></div></div><br class="figure-break"><p>S&auml;mtliche Funktionalit&auml;t wurde anschlie&szlig;end auf das generierte statische Brett
+                    als &uuml;berliegendes Layer implementiert. Die Funktionen bzw. Komponenten
+                    beinhalten unter anderem:</p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p><span class="bold"><strong>Steine</strong></span>: Hierf&uuml;r wurden 12
+                                Graphiken erstellt und angelgt, damit diese je nach Z&auml;hlerstand in
+                                die jeweilge Mulde gelegt werden k&ouml;nnen.</p></li></ul></div><p>
+                    </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p><span class="bold"><strong>Schaltfl&auml;chen</strong></span>: Zwei Schaltfl&auml;chen
+                                (Buttons) zum Anlegen eines neuen Spiels "NEW GAME" und f&uuml;r das
+                                Zur&uuml;cksetzen eines laufeneden Spiels wurden mittig unter das
+                                statische Spielbrett eingef&uuml;gt.</p></li></ul></div><p>
+                </p><p>
+                    </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p><span class="bold"><strong>Markierungen</strong></span>: Die Mulden des
+                                Spielers, der gerade am Zug ist, werden mit einer Markierung
+                                (organge) umrandet. Dies wurde mit 12 transparenten und zugleich
+                                klickbaren Kreisen implementiert. Ein besonderes Features ist, dass
+                                die XSLT den aktuellen Spielzustand auslie&szlig;st und den Kreis nur
+                                umrandet und klickbar macht, wenn auch Steine darin vorhanden sind
+                                und au&szlig;erdem der zugeh&ouml;rige Spieler am Zug ist. </p></li></ul></div><p>
+                </p><p>
+                    </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p><span class="bold"><strong>Texte</strong></span>: Unter anderem die Anzahl
+                                der Steine im jeweiligen Haus und die einzelnen Z&auml;hler unter den
+                                Mulden. Zudem wird &uuml;ber bzw. unter dem Brett angezeigt, welcher
+                                Spieler gerade am Zug ist oder gewonnen hat. </p></li></ul></div><p>
+                </p><p>
+                    </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p><span class="bold"><strong>Pfeile</strong></span>: &Uuml;ber dem Haus wird
+                                jeweils angezeigt, welcher Spieler gerade am Zug ist.</p></li></ul></div><p>
+                </p><div class="figure"><a name="d5e123"></a><p class="title"><b>Figure&nbsp;2.4.&nbsp;Spielbrett mit &uuml;berliegender Logik-Ebene&nbsp;|&nbsp;Spieler 1 am Zug</b></p><div class="figure-contents"><div class="mediaobject"><img src="../../player1.png" width="189" alt="Spielbrett mit &uuml;berliegender Logik-Ebene&nbsp;|&nbsp;Spieler 1 am Zug"></div></div></div><br class="figure-break"><div class="figure"><a name="d5e128"></a><p class="title"><b>Figure&nbsp;2.5.&nbsp;Spielbrett mit &uuml;berliegender Logik-Ebene | Spieler 2 am Zug</b></p><div class="figure-contents"><div class="mediaobject"><img src="../../player2.png" width="189" alt="Spielbrett mit &uuml;berliegender Logik-Ebene | Spieler 2 am Zug"></div></div></div><br class="figure-break"><p>Die beiden Abbildungen 2.4 und 2.5 zeigen sowohl die Ansicht wenn Spieler 1
+                    als auch Spieler 2 am Zug sind. Die &uuml;berliegende Logik des Brettspiels ist hier
+                    gut zu erkennen. Pro Mulde werden aus Darstellungsgr&uuml;nden maximal 12 Steine
+                    angezeigt. Sollte w&auml;hrend eines Spiels die Anzahl der Steine pro Mulde 12
+                    &uuml;bersteigen, so wird nur noch die tats&auml;chliche Anzahl im Feld dar&uuml;ber/darunter
+                    modifiziert, jedoch weiterhin die Graphik f&uuml;r 12 Steine eingeblendet. Dieses
+                    Ph&auml;nomen konnte jedoch bei zahlreichen Spielversuchen nur in Ausnahmef&auml;llen
+                    nachgestellt und beobachtet werden. </p></div><div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="d5e134"></a>Client/Server Modell</h3></div></div></div><p>Die Architektur wurde so gew&auml;hlt, dass die Umgebung dem klassischen
+                    Client/Server Modell mit den folgenden Komponenten entspricht:</p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>Datenbank</p></li><li class="listitem"><p>Client</p></li><li class="listitem"><p>Server</p></li></ul></div><p>Dieses Modell wird detailliert in nachfolgender Abbildung dargestellt.</p><div class="figure"><a name="d5e145"></a><p class="title"><b>Figure&nbsp;2.6.&nbsp;Client/Server Architektur</b></p><div class="figure-contents"><div class="mediaobject"><img src="../../csarch.png" width="162" alt="Client/Server Architektur"></div></div></div><br class="figure-break"></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch02.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch02.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch03.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Chapter&nbsp;2.&nbsp;Design und Architektur&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;Chapter&nbsp;3.&nbsp;Implementierung</td></tr></table></div></body></html>
